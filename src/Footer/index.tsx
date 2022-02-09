@@ -1,4 +1,4 @@
-import { Container, styled } from '@mui/material';
+import { Box, Container, styled } from '@mui/material';
 import { useMemo } from 'react';
 
 interface IProps {
@@ -6,18 +6,23 @@ interface IProps {
   company?: string;
 }
 
-const P = styled('p')({
-  margin: 0,
-});
+const StyledBox = styled(Box)(({ theme }) => ({
+  marginBlock: theme.spacing(3),
+}));
+
+const StyledContainer = styled(Container)(({ theme }) => ({
+  overflow: 'auto',
+  paddingInline: theme.spacing(3),
+}));
 
 const Footer = ({ children, company: _company }: IProps) => {
   const company = useMemo(() => (_company ? ` ${_company}` : ''), [_company]);
 
   return (
-    <Container maxWidth="xl">
+    <StyledContainer as="footer" maxWidth="xl">
       {children}
-      <P>© 2022{company}. All rights reserved.</P>
-    </Container>
+      <StyledBox as="p">© 2022{company}. All rights reserved.</StyledBox>
+    </StyledContainer>
   );
 };
 
