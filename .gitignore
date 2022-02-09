@@ -31,4 +31,5 @@ yarn-error.log*
 .env.production.local
 
 /lib
+/storybook-static
 package-lock.json
