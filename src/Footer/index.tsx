@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 
 interface IProps {
   children?: React.ReactNode;
+  className?: string;
   company?: string;
 }
 
@@ -15,11 +16,11 @@ const StyledContainer = styled(Container)(({ theme }) => ({
   paddingInline: theme.spacing(3),
 }));
 
-const Footer = ({ children, company: _company }: IProps) => {
+const Footer = ({ children, className, company: _company }: IProps) => {
   const company = useMemo(() => (_company ? ` ${_company}` : ''), [_company]);
 
   return (
-    <StyledContainer as="footer" maxWidth="xl">
+    <StyledContainer as="footer" className={className} maxWidth="xl">
       {children}
       <StyledBox as="p">© 2022{company}. All rights reserved.</StyledBox>
     </StyledContainer>

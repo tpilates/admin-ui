@@ -17,13 +17,14 @@ import {
 import { useCallback, useState } from 'react';
 
 interface IProps {
+  className?: string;
   color?: AppBarProps['color'];
   logo?: React.ReactNode;
   pages?: { href: string; value: string }[];
   src?: string;
 }
 
-const Header = ({ color, logo, pages, src }: IProps) => {
+const Header = ({ className, color, logo, pages, src }: IProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const onOpen = useCallback((e: React.MouseEvent<HTMLElement>) => {
@@ -34,7 +35,7 @@ const Header = ({ color, logo, pages, src }: IProps) => {
   }, []);
 
   return (
-    <AppBar color={color} position="static">
+    <AppBar className={className} color={color} position="static">
       <Container maxWidth="xl">
         <Toolbar variant="dense" disableGutters>
           {/* md: logo */}
