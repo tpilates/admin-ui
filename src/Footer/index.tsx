@@ -7,22 +7,21 @@ interface IProps {
   company?: string;
 }
 
-const StyledBox = styled(Box)(({ theme }) => ({
-  marginBlock: theme.spacing(3),
-}));
-
-const StyledContainer = styled(Container)(({ theme }) => ({
+const StyledContainer = styled(Container, {
+  shouldForwardProp: () => true,
+})({
   overflow: 'auto',
-  paddingInline: theme.spacing(3),
-}));
+});
 
 const Footer = ({ children, className, company: _company }: IProps) => {
   const company = useMemo(() => (_company ? ` ${_company}` : ''), [_company]);
 
   return (
-    <StyledContainer as="footer" className={className} maxWidth="xl">
+    <StyledContainer as="footer" className={className} maxWidth={false}>
       {children}
-      <StyledBox as="p">© 2022{company}. All rights reserved.</StyledBox>
+      <Box component="p" my={3}>
+        © 2022{company}. All rights reserved.
+      </Box>
     </StyledContainer>
   );
 };
