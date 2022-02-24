@@ -1,7 +1,5 @@
-import {
-  CallMade as CallMadeIcon,
-  Menu as MenuIcon,
-} from '@mui/icons-material';
+import CallMadeIcon from '@mui/icons-material/CallMade';
+import MenuIcon from '@mui/icons-material/Menu';
 import {
   AppBar,
   Box,

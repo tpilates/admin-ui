@@ -1,12 +1,10 @@
 /* eslint-disable no-console */
-import {
-  AllInclusive as AllinclusiveIcon,
-  AlternateEmail as AlternateEmailIcon,
-  Apple as AppleIcon,
-  Facebook as FacebookIcon,
-  Google as GoogleIcon,
-  Instagram as InstagramIcon,
-} from '@mui/icons-material';
+import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
+import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
+import AppleIcon from '@mui/icons-material/Apple';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import GoogleIcon from '@mui/icons-material/Google';
+import InstagramIcon from '@mui/icons-material/Instagram';
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import Layout from '.';
@@ -21,7 +19,7 @@ const Template: ComponentStory<typeof Layout> = (args) => <Layout {...args} />;
 
 const items = [
   {
-    icon: <AllinclusiveIcon />,
+    icon: <AllInclusiveIcon />,
     subItems: [
       { icon: <FacebookIcon />, text: 'Facebook' },
       { icon: <InstagramIcon />, text: 'Instagram' },
@@ -53,8 +51,8 @@ Default.args = {
   headerTitle: 'Meta',
   navItems: items,
   navTitle: <AlternateEmailIcon />,
-  onClickItem: () => {
-    console.log('Click!');
+  onClickItem: (path) => {
+    console.log(path);
   },
 };
 
@@ -67,7 +65,7 @@ CustomWidth.args = {
   navItems: items,
   navTitle: <AlternateEmailIcon />,
   navWidth: 320,
-  onClickItem: () => {
-    console.log('Click!');
+  onClickItem: (path) => {
+    console.log(path);
   },
 };

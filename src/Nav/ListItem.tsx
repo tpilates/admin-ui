@@ -1,7 +1,5 @@
-import {
-  ExpandLess as ExpandLessIcon,
-  ExpandMore as ExpandMoreIcon,
-} from '@mui/icons-material';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import type { ListItemButtonBaseProps as MuiListItemButtonBaseProps } from '@mui/material';
 import {
   Collapse,

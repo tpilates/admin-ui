@@ -1,11 +1,9 @@
 /* eslint-disable no-console */
-import {
-  AllInclusive as AllinclusiveIcon,
-  Apple as AppleIcon,
-  Facebook as FacebookIcon,
-  Google as GoogleIcon,
-  Instagram as InstagramIcon,
-} from '@mui/icons-material';
+import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
+import AppleIcon from '@mui/icons-material/Apple';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import GoogleIcon from '@mui/icons-material/Google';
+import InstagramIcon from '@mui/icons-material/Instagram';
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import Nav from '.';
@@ -19,7 +17,7 @@ const Template: ComponentStory<typeof Nav> = (args) => <Nav {...args} />;
 
 const items = [
   {
-    icon: <AllinclusiveIcon />,
+    icon: <AllInclusiveIcon />,
     path: '#',
     subItems: [
       { icon: <FacebookIcon />, path: '#', text: 'Facebook' },
@@ -65,7 +63,7 @@ export const NestedNav = Template.bind({});
 NestedNav.args = {
   items: [
     {
-      icon: <AllinclusiveIcon />,
+      icon: <AllInclusiveIcon />,
       path: '#',
       subItems: [
         { icon: <FacebookIcon />, path: '#', text: 'Facebook' },
