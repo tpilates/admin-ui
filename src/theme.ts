@@ -11,13 +11,6 @@ const fontFamily = [
 ].join(',');
 
 const theme = createTheme({
-  components: {
-    MuiTypography: {
-      defaultProps: {
-        fontFamily,
-      },
-    },
-  },
   typography: {
     fontFamily,
   },
