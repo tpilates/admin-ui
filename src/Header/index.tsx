@@ -9,6 +9,7 @@ import {
   Link as MuiLink,
   Menu,
   MenuItem,
+  styled,
   Toolbar,
   Typography,
 } from '@mui/material';
@@ -23,6 +24,27 @@ export interface HeaderProps {
   title?: string;
 }
 
+const MD_SX = {
+  display: {
+    md: 'flex',
+    xs: 'none',
+  },
+};
+
+const XS_SX = {
+  display: {
+    md: 'none',
+    xs: 'flex',
+  },
+};
+
+const StyledHeader = styled(AppBar, {
+  shouldForwardProp: () => true,
+})({
+  borderBottom: '1px solid black',
+  boxShadow: 'none',
+});
+
 const Header = ({ title, pages = [], onOpen }: HeaderProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
@@ -35,34 +57,15 @@ const Header = ({ title, pages = [], onOpen }: HeaderProps) => {
   }, []);
 
   return (
-    <AppBar color="inherit" position="static">
+    <StyledHeader color="inherit" position="static">
       <Toolbar variant="dense">
         {/* md: title */}
-        <Typography
-          component="div"
-          sx={{
-            display: {
-              md: 'flex',
-              xs: 'none',
-            },
-            mr: 2,
-          }}
-          variant="h6"
-          noWrap
-        >
+        <Typography component="div" mr={2} sx={MD_SX} variant="h6" noWrap>
           {title}
         </Typography>
 
         {/* xs: left nav */}
-        <Box
-          sx={{
-            display: {
-              md: 'none',
-              xs: 'flex',
-            },
-            flexGrow: 1,
-          }}
-        >
+        <Box flexGrow={1} sx={XS_SX}>
           <IconButton
             color="inherit"
             id="left-header-button"
@@ -74,37 +77,18 @@ const Header = ({ title, pages = [], onOpen }: HeaderProps) => {
         </Box>
 
         {/* xs: title */}
-        <Typography
-          component="div"
-          sx={{
-            display: {
-              md: 'none',
-              xs: 'flex',
-            },
-            flexGrow: 1,
-          }}
-          variant="h6"
-          noWrap
-        >
+        <Typography component="div" flexGrow={1} sx={XS_SX} variant="h6" noWrap>
           {title}
         </Typography>
 
         {/* md: nav */}
-        <Box
-          sx={{
-            display: {
-              md: 'flex',
-              xs: 'none',
-            },
-            flexGrow: 1,
-          }}
-        >
+        <Box flexGrow={1} sx={MD_SX}>
           {pages.map(({ path, text }) => (
             <MuiLink
               key={text}
               color="inherit"
               href={path}
-              sx={{ padding: 2 }}
+              padding={2}
               underline="hover"
             >
               {text}
@@ -113,15 +97,7 @@ const Header = ({ title, pages = [], onOpen }: HeaderProps) => {
         </Box>
 
         {/* xs: right nav */}
-        <Box
-          sx={{
-            display: {
-              md: 'none',
-              xs: 'flex',
-            },
-            flexGrow: 0,
-          }}
-        >
+        <Box flexGrow={0} sx={XS_SX}>
           <IconButton
             color="inherit"
             id="right-header-button"
@@ -132,17 +108,8 @@ const Header = ({ title, pages = [], onOpen }: HeaderProps) => {
           </IconButton>
           <Menu
             anchorEl={anchorEl}
-            anchorOrigin={{
-              horizontal: 'left',
-              vertical: 'bottom',
-            }}
             open={anchorEl?.id === 'right-header-button'}
-            sx={{
-              display: {
-                md: 'none',
-                xs: 'block',
-              },
-            }}
+            sx={XS_SX}
             keepMounted
             onClose={onCloseMenu}
           >
@@ -156,7 +123,7 @@ const Header = ({ title, pages = [], onOpen }: HeaderProps) => {
           </Menu>
         </Box>
       </Toolbar>
-    </AppBar>
+    </StyledHeader>
   );
 };
 
