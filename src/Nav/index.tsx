@@ -1,6 +1,6 @@
 import type { DrawerProps } from '@mui/material';
 import { Drawer, List, styled, Toolbar, Typography } from '@mui/material';
-import type { MouseEventHandler, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { memo } from 'react';
 
 import type { ListItemProps } from './ListItem';
@@ -13,8 +13,8 @@ interface StyledDrawerProps extends DrawerProps {
 
 export interface NavProps {
   items: ListItemProps[];
-  onClickItem: MouseEventHandler<HTMLDivElement>;
-  width: number;
+  onClickItem: ListItemProps['onClick'];
+  width: StyledDrawerProps['width'];
   onClose?: DrawerProps['onClose'];
   open?: boolean;
   sx?: DrawerProps['sx'];
@@ -65,12 +65,13 @@ const Nav = ({
             {title}
           </Typography>
         </Toolbar>
-        {items.map(({ icon, subItems, text }, index) => {
+        {items.map(({ icon, path, subItems, text }, index) => {
           return (
             <ListItem
               // eslint-disable-next-line react/no-array-index-key
               key={index}
               icon={icon}
+              path={path}
               subItems={subItems}
               text={text}
               onClick={onClickItem}

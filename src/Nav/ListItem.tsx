@@ -10,23 +10,29 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
-import type { MouseEventHandler, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { useCallback, useState } from 'react';
 
+import type { Link } from '../types';
+
 // #region types
-interface ListItemButtonBaseProps {
-  onClick: MouseEventHandler<HTMLDivElement>;
-  text: ReactNode;
+type LinkEventHandler = (path: string) => void;
+
+interface ListItemButtonBase extends Link {
   icon?: ReactNode;
+}
+interface ListItemButtonProps extends ListItemButtonBase {
+  onClick: LinkEventHandler;
+  open?: boolean;
   sx?: MuiListItemButtonBaseProps['sx'];
 }
 
-interface ListItemButtonProps extends ListItemButtonBaseProps {
-  open?: boolean;
+export interface ListItemBase extends ListItemButtonBase {
+  subItems?: ListItemBase[];
 }
-
-export interface ListItemProps extends ListItemButtonBaseProps {
-  subItems?: { icon: ReactNode; text: ReactNode }[];
+export interface ListItemProps extends ListItemBase {
+  onClick: LinkEventHandler;
+  sx?: MuiListItemButtonBaseProps['sx'];
 }
 // #endregion
 
@@ -39,11 +45,16 @@ const ListItemButton = ({
   icon,
   onClick,
   open,
+  path,
   sx,
   text,
 }: ListItemButtonProps) => {
+  const handleClick = useCallback(() => {
+    onClick(path);
+  }, [path, onClick]);
+
   return (
-    <MuiListItemButton sx={sx} onClick={onClick}>
+    <MuiListItemButton sx={sx} onClick={handleClick}>
       <ListItemIcon>{icon}</ListItemIcon>
       <ListItemText primary={text} />
       {typeof open === 'boolean' && <CollapseIcon open={open} />}
@@ -54,26 +65,28 @@ const ListItemButton = ({
 
 const SX = { pl: 4 };
 
-const ListItem = ({ icon, onClick, subItems, sx, text }: ListItemProps) => {
+const ListItem = ({
+  icon,
+  onClick,
+  path,
+  subItems,
+  sx,
+  text,
+}: ListItemProps) => {
   const [open, setOpen] = useState(false);
 
-  const handleClick = useCallback<MouseEventHandler<HTMLDivElement>>(
-    (e) => {
-      if (subItems) {
-        setOpen((state) => !state);
-        return;
-      }
+  const onToggle = useCallback(() => {
+    setOpen((state) => !state);
+  }, []);
 
-      onClick(e);
-    },
-    [subItems, onClick]
-  );
+  const handleClick = subItems ? onToggle : onClick;
 
   return (
     <>
       <ListItemButton
         icon={icon}
         open={subItems ? open : undefined}
+        path={path}
         sx={sx}
         text={text}
         onClick={handleClick}
@@ -81,16 +94,20 @@ const ListItem = ({ icon, onClick, subItems, sx, text }: ListItemProps) => {
       {subItems && (
         <Collapse in={open} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            {subItems.map(({ icon: subIcon, text: subText }, index) => (
-              <ListItemButton
-                // eslint-disable-next-line react/no-array-index-key
-                key={index}
-                icon={subIcon}
-                sx={SX}
-                text={subText}
-                onClick={onClick}
-              />
-            ))}
+            {subItems.map(
+              ({ icon: subIcon, path, subItems, text: subText }, index) => (
+                <ListItem
+                  // eslint-disable-next-line react/no-array-index-key
+                  key={index}
+                  icon={subIcon}
+                  path={path}
+                  subItems={subItems}
+                  sx={SX}
+                  text={subText}
+                  onClick={onClick}
+                />
+              )
+            )}
           </List>
         </Collapse>
       )}
