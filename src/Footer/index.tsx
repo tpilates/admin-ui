@@ -1,4 +1,4 @@
-import { Box, Container, styled } from '@mui/material';
+import { Box } from '@mui/material';
 import type { ReactNode } from 'react';
 import { memo, useMemo } from 'react';
 
@@ -7,12 +7,6 @@ export interface FooterProps {
   children?: ReactNode;
 }
 
-const StyledContainer = styled(Container, {
-  shouldForwardProp: () => true,
-})({
-  overflow: 'auto',
-});
-
 const Footer = ({ businessName, children }: FooterProps) => {
   const $businessName = useMemo(
     () => (businessName ? ` ${businessName}` : ''),
@@ -20,12 +14,12 @@ const Footer = ({ businessName, children }: FooterProps) => {
   );
 
   return (
-    <StyledContainer as="footer" maxWidth={false}>
+    <Box borderTop="1px solid black" component="footer" overflow="auto" px={3}>
       {children}
       <Box component="p" my={3}>
         © 2022{$businessName}. All rights reserved.
       </Box>
-    </StyledContainer>
+    </Box>
   );
 };
 
