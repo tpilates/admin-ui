@@ -6,7 +6,7 @@ import {
   AppBar,
   Box,
   IconButton,
-  Link,
+  Link as MuiLink,
   Menu,
   MenuItem,
   Toolbar,
@@ -15,9 +15,11 @@ import {
 import type { MouseEventHandler } from 'react';
 import { memo, useCallback, useState } from 'react';
 
+import type { Link } from '../types';
+
 export interface HeaderProps {
   onOpen?: MouseEventHandler<HTMLButtonElement>;
-  pages?: { path: string; text: string }[];
+  pages?: Link[];
   title?: string;
 }
 
@@ -98,7 +100,7 @@ const Header = ({ title, pages = [], onOpen }: HeaderProps) => {
           }}
         >
           {pages.map(({ path, text }) => (
-            <Link
+            <MuiLink
               key={text}
               color="inherit"
               href={path}
@@ -106,7 +108,7 @@ const Header = ({ title, pages = [], onOpen }: HeaderProps) => {
               underline="hover"
             >
               {text}
-            </Link>
+            </MuiLink>
           ))}
         </Box>
 
@@ -146,9 +148,9 @@ const Header = ({ title, pages = [], onOpen }: HeaderProps) => {
           >
             {pages.map(({ path, text }) => (
               <MenuItem key={text} onClick={onCloseMenu}>
-                <Link color="inherit" href={path} underline="none">
+                <MuiLink color="inherit" href={path} underline="none">
                   <Typography textAlign="center">{text}</Typography>
-                </Link>
+                </MuiLink>
               </MenuItem>
             ))}
           </Menu>
