@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material';
+import { koKR } from '@mui/material/locale';
 
 const fontFamily = [
   '-apple-system',
@@ -10,10 +11,13 @@ const fontFamily = [
   'sans-serif',
 ].join(',');
 
-const theme = createTheme({
-  typography: {
-    fontFamily,
+const theme = createTheme(
+  {
+    typography: {
+      fontFamily,
+    },
   },
-});
+  koKR
+);
 
 export default theme;
