@@ -28,10 +28,12 @@ interface LayoutProps {
 }
 // #endregion
 
+const defaultWidth = 240;
+
 // #region
 const Container = styled('div', {
   shouldForwardProp: (prop) => prop !== 'width',
-})<NavWidth>(({ theme, width }) => ({
+})<NavWidth>(({ theme, width = defaultWidth }) => ({
   display: 'grid',
   gridTemplateColumns: '1fr',
   gridTemplateRows: 'auto 1fr auto',
@@ -68,7 +70,7 @@ const Layout = ({
   headerTitle,
   navItems,
   navTitle,
-  navWidth = 240,
+  navWidth = defaultWidth,
   onClickItem,
 }: LayoutProps) => {
   const [open, setOpen] = useState(false);

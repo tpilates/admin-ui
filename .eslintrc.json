@@ -1,6 +1,8 @@
 {
   "env": { "browser": true },
   "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "airbnb",
     "airbnb-typescript",
     "airbnb/hooks",
@@ -15,32 +17,8 @@
     "typescript-sort-keys"
   ],
   "rules": {
-    "@typescript-eslint/array-type": "error",
-    "@typescript-eslint/ban-types": [
-      "error",
-      {
-        "types": {
-          "{}": { "fixWith": "object" },
-          "Object": { "fixWith": "object" }
-        }
-      }
-    ],
-    "@typescript-eslint/consistent-type-definitions": "error",
     "@typescript-eslint/consistent-type-imports": "error",
-    "@typescript-eslint/method-signature-style": "error",
-    "@typescript-eslint/no-confusing-non-null-assertion": "error",
-    "@typescript-eslint/no-confusing-void-expression": "error",
-    "@typescript-eslint/no-extra-non-null-assertion": "error",
-    "@typescript-eslint/no-inferrable-types": "error",
     "@typescript-eslint/no-shadow": "off",
-    "@typescript-eslint/no-unnecessary-boolean-literal-compare": "error",
-    "@typescript-eslint/no-unnecessary-condition": "error",
-    "@typescript-eslint/no-unnecessary-type-arguments": "error",
-    "@typescript-eslint/non-nullable-type-assertion-style": "error",
-    "@typescript-eslint/prefer-includes": "error",
-    "@typescript-eslint/prefer-reduce-type-parameter": "error",
-    "@typescript-eslint/prefer-string-starts-ends-with": "error",
-    "@typescript-eslint/sort-type-union-intersection-members": "error",
     "import/no-extraneous-dependencies": [
       "error",
       { "devDependencies": ["src/**/*.stories.ts?(x)"] }
