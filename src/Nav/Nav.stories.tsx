@@ -1,12 +1,14 @@
-/* eslint-disable no-console */
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
 import AppleIcon from '@mui/icons-material/Apple';
+import Battery60Icon from '@mui/icons-material/Battery60';
+import Battery80Icon from '@mui/icons-material/Battery80';
+import Battery90Icon from '@mui/icons-material/Battery90';
+import BatteryFullIcon from '@mui/icons-material/BatteryFull';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import GoogleIcon from '@mui/icons-material/Google';
 import InstagramIcon from '@mui/icons-material/Instagram';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import { action } from '@storybook/addon-actions';
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { useCallback, useState } from 'react';
 
 import Nav from '.';
 
@@ -19,31 +21,70 @@ export default {
 export const itemsData = [
   {
     icon: <AllInclusiveIcon />,
-    path: '#',
+    path: '#meta',
     subItems: [
-      { icon: <FacebookIcon />, path: '#', text: 'Facebook' },
-      { icon: <InstagramIcon />, path: '#', text: 'Instagram' },
+      { icon: <FacebookIcon />, path: '#meta/facebook', text: 'Facebook' },
+      { icon: <InstagramIcon />, path: '#meta/instagram', text: 'Instagram' },
     ],
     text: 'Meta',
   },
   {
     icon: <AppleIcon />,
-    path: '#',
+    path: '#apple',
     text: 'Apple',
   },
   {
     icon: <GoogleIcon />,
-    path: '#',
+    path: '#google',
     text: 'Google',
   },
 ];
 
-const Template: ComponentStory<typeof Nav> = (args) => <Nav {...args} />;
+export const nestedItemsData = [
+  {
+    icon: <BatteryFullIcon />,
+    path: '#battery',
+    subItems: [
+      { icon: <Battery90Icon />, path: '#battery/90', text: 'Battery90' },
+      {
+        icon: <Battery80Icon />,
+        path: '#battery/80',
+        subItems: [
+          {
+            icon: <Battery60Icon />,
+            path: '#battery/80/60',
+            text: 'Battery60',
+          },
+        ],
+        text: 'Battery80',
+      },
+    ],
+    text: 'BatteryFull',
+  },
+];
+
+export const listsData = [
+  { items: itemsData, subheader: 'A' },
+  {
+    items: nestedItemsData,
+    subheader: 'B',
+  },
+];
+
+const Template: ComponentStory<typeof Nav> = (args) => {
+  const { pathname: argsPathname, ...props } = args;
+  const [pathname, setPathname] = useState(argsPathname || '#meta/instagram');
+
+  const onClickItem = useCallback((path: string) => {
+    setPathname(path);
+  }, []);
+
+  return <Nav {...props} pathname={pathname} onClickItem={onClickItem} />;
+};
 
 export const PermanentNav = Template.bind({});
 PermanentNav.args = {
   items: itemsData,
-  onClickItem: action('onClickItem'),
   title: 'ADMIN',
   variant: 'permanent',
   width: 240,
@@ -52,7 +93,6 @@ PermanentNav.args = {
 export const TemporaryNav = Template.bind({});
 TemporaryNav.args = {
   items: itemsData,
-  onClickItem: action('onClickItem'),
   open: true,
   title: 'ADMIN',
   width: 240,
@@ -60,16 +100,18 @@ TemporaryNav.args = {
 
 export const NestedNav = Template.bind({});
 NestedNav.args = {
-  items: [
-    ...itemsData,
-    {
-      icon: <TwitterIcon />,
-      path: '#',
-      subItems: itemsData,
-      text: 'Twitter',
-    },
-  ],
-  onClickItem: action('onClickItem'),
+  items: nestedItemsData,
+  pathname: '#battery/90',
+  title: 'ADMIN',
+  variant: 'permanent',
+  width: 240,
+};
+
+export const NavWithLists = Template.bind({});
+NavWithLists.args = {
+  lists: listsData,
+  pathname: '#battery/80/60',
+  sx: { display: { md: 'block', xs: 'none' } },
   title: 'ADMIN',
   variant: 'permanent',
   width: 240,
@@ -78,7 +120,6 @@ NestedNav.args = {
 export const ResponsiveNav = Template.bind({});
 ResponsiveNav.args = {
   items: itemsData,
-  onClickItem: action('onClickItem'),
   sx: { display: { md: 'block', xs: 'none' } },
   title: 'ADMIN',
   variant: 'permanent',

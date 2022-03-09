@@ -3,6 +3,7 @@ import {
   createTheme,
   Drawer,
   List,
+  ListSubheader,
   styled,
   ThemeProvider,
   Toolbar,
@@ -12,24 +13,20 @@ import type { ReactNode } from 'react';
 import { memo } from 'react';
 
 import type { ListItemProps } from './ListItem';
-import ListItem from './ListItem';
-
-// #region types
-interface StyledDrawerProps extends DrawerProps {
-  width?: number;
-}
+import { renderListItems } from './ListItem';
 
 export interface NavProps {
-  items: ListItemProps[];
   onClickItem: ListItemProps['onClick'];
-  width: StyledDrawerProps['width'];
+  pathname: string;
+  width: number;
+  items?: ListItemProps[];
+  lists?: { items: ListItemProps[]; subheader: string }[];
   onClose?: DrawerProps['onClose'];
   open?: boolean;
   sx?: DrawerProps['sx'];
   title?: ReactNode;
   variant?: DrawerProps['variant'];
 }
-// #endregion
 
 const COLOR = '#F5F5F7';
 const BACKGROUND_COLOR = '#000000CC';
@@ -42,21 +39,30 @@ const OPTIONS: ThemeOptions = {
         },
       },
     },
+    MuiListSubheader: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'inherit',
+          fontSize: '1.125rem',
+        },
+      },
+    },
   },
   palette: {
     background: { paper: BACKGROUND_COLOR },
     mode: 'dark',
     primary: {
-      main: '#AAAAAA',
+      main: COLOR,
     },
     text: { primary: COLOR },
   },
+  typography: { fontFamily: 'inherit' }, // Inherit global theme
 };
 const theme = createTheme(OPTIONS);
 
 const StyledDrawer = styled(Drawer, {
   shouldForwardProp: (prop) => prop !== 'width',
-})<StyledDrawerProps>(({ width }) => ({
+})<{ width: number }>(({ width }) => ({
   '& .MuiDrawer-paper': {
     width,
   },
@@ -64,13 +70,15 @@ const StyledDrawer = styled(Drawer, {
 
 const Nav = ({
   items,
+  lists,
   onClickItem,
   onClose,
   open,
+  pathname,
   sx,
   title,
   variant = 'temporary',
-  width,
+  width = 240,
 }: NavProps) => {
   return (
     <ThemeProvider theme={theme}>
@@ -87,19 +95,19 @@ const Nav = ({
               {title}
             </Typography>
           </Toolbar>
-          {items.map(({ icon, path, subItems, text }, index) => {
-            return (
-              <ListItem
-                // eslint-disable-next-line react/no-array-index-key
-                key={index}
-                icon={icon}
-                path={path}
-                subItems={subItems}
-                text={text}
-                onClick={onClickItem}
-              />
-            );
-          })}
+          {lists?.map(({ items, subheader }, index) => (
+            <List
+              // eslint-disable-next-line react/no-array-index-key
+              key={index}
+              component="section"
+              subheader={
+                <ListSubheader component="header">{subheader}</ListSubheader>
+              }
+            >
+              {renderListItems({ items, onClickItem, pathname })}
+            </List>
+          ))}
+          {renderListItems({ items, onClickItem, pathname })}
         </List>
       </StyledDrawer>
     </ThemeProvider>
