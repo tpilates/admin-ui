@@ -1,85 +1,116 @@
-import type { DrawerProps } from '@mui/material';
-import { Drawer, List, styled, Toolbar, Typography } from '@mui/material';
+import type { DrawerProps, ThemeOptions } from '@mui/material';
+import {
+  createTheme,
+  Drawer,
+  List,
+  ListSubheader,
+  styled,
+  ThemeProvider,
+  Toolbar,
+  Typography,
+} from '@mui/material';
 import type { ReactNode } from 'react';
 import { memo } from 'react';
 
 import type { ListItemProps } from './ListItem';
-import ListItem from './ListItem';
-
-// #region types
-interface StyledDrawerProps extends DrawerProps {
-  width?: number;
-}
+import { renderListItems } from './ListItem';
 
 export interface NavProps {
-  items: ListItemProps[];
   onClickItem: ListItemProps['onClick'];
-  width: StyledDrawerProps['width'];
+  pathname: string;
+  width: number;
+  items?: ListItemProps[];
+  lists?: { items: ListItemProps[]; subheader: string }[];
   onClose?: DrawerProps['onClose'];
   open?: boolean;
   sx?: DrawerProps['sx'];
   title?: ReactNode;
   variant?: DrawerProps['variant'];
 }
-// #endregion
 
-// #region StyledDrawer
 const COLOR = '#F5F5F7';
 const BACKGROUND_COLOR = '#000000CC';
+const OPTIONS: ThemeOptions = {
+  components: {
+    MuiListItemIcon: {
+      styleOverrides: {
+        root: {
+          color: COLOR,
+        },
+      },
+    },
+    MuiListSubheader: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'inherit',
+          fontSize: '1.125rem',
+        },
+      },
+    },
+  },
+  palette: {
+    background: { paper: BACKGROUND_COLOR },
+    mode: 'dark',
+    primary: {
+      main: COLOR,
+    },
+    text: { primary: COLOR },
+  },
+  typography: { fontFamily: 'inherit' }, // Inherit global theme
+};
+const theme = createTheme(OPTIONS);
 
 const StyledDrawer = styled(Drawer, {
   shouldForwardProp: (prop) => prop !== 'width',
-})<StyledDrawerProps>(({ width }) => ({
+})<{ width: number }>(({ width }) => ({
   '& .MuiDrawer-paper': {
-    backgroundColor: BACKGROUND_COLOR,
-    color: COLOR,
     width,
   },
-  '& .MuiListItemIcon-root': {
-    color: COLOR,
-  },
 }));
-// #endregion
 
 const Nav = ({
   items,
+  lists,
   onClickItem,
   onClose,
   open,
+  pathname,
   sx,
   title,
   variant = 'temporary',
-  width,
+  width = 240,
 }: NavProps) => {
   return (
-    <StyledDrawer
-      open={open}
-      sx={sx}
-      variant={variant}
-      width={width}
-      onClose={onClose}
-    >
-      <List component="nav">
-        <Toolbar>
-          <Typography component="div" variant="h6">
-            {title}
-          </Typography>
-        </Toolbar>
-        {items.map(({ icon, path, subItems, text }, index) => {
-          return (
-            <ListItem
+    <ThemeProvider theme={theme}>
+      <StyledDrawer
+        open={open}
+        sx={sx}
+        variant={variant}
+        width={width}
+        onClose={onClose}
+      >
+        <List component="nav">
+          <Toolbar>
+            <Typography component="div" variant="h6">
+              {title}
+            </Typography>
+          </Toolbar>
+          {lists?.map(({ items, subheader }, index) => (
+            <List
               // eslint-disable-next-line react/no-array-index-key
               key={index}
-              icon={icon}
-              path={path}
-              subItems={subItems}
-              text={text}
-              onClick={onClickItem}
-            />
-          );
-        })}
-      </List>
-    </StyledDrawer>
+              component="section"
+              subheader={
+                <ListSubheader component="header">{subheader}</ListSubheader>
+              }
+            >
+              {renderListItems({ items, onClickItem, pathname })}
+            </List>
+          ))}
+          {renderListItems({ items, onClickItem, pathname })}
+        </List>
+      </StyledDrawer>
+    </ThemeProvider>
   );
 };
 

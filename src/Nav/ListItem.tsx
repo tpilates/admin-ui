@@ -1,67 +1,20 @@
-import {
-  ExpandLess as ExpandLessIcon,
-  ExpandMore as ExpandMoreIcon,
-} from '@mui/icons-material';
 import type { ListItemButtonBaseProps as MuiListItemButtonBaseProps } from '@mui/material';
-import {
-  Collapse,
-  List,
-  ListItemButton as MuiListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from '@mui/material';
-import type { ReactNode } from 'react';
+import { Collapse, List } from '@mui/material';
 import { useCallback, useState } from 'react';
 
-import type { Link } from '../types';
-
-// #region types
-type LinkEventHandler = (path: string) => void;
-
-interface ListItemButtonBase extends Link {
-  icon?: ReactNode;
-}
-interface ListItemButtonProps extends ListItemButtonBase {
-  onClick: LinkEventHandler;
-  open?: boolean;
-  sx?: MuiListItemButtonBaseProps['sx'];
-}
+import type { ListItemButtonBase, ListItemButtonProps } from './ListItemButton';
+import ListItemButton from './ListItemButton';
 
 export interface ListItemBase extends ListItemButtonBase {
   subItems?: ListItemBase[];
 }
-export interface ListItemProps extends ListItemBase {
-  onClick: LinkEventHandler;
-  sx?: MuiListItemButtonBaseProps['sx'];
+export interface ListItemProps
+  extends Pick<
+    ListItemButtonProps,
+    'icon' | 'path' | 'pathname' | 'onClick' | 'sx' | 'text'
+  > {
+  subItems?: ListItemBase[];
 }
-// #endregion
-
-// #region ListItemButton
-const CollapseIcon = ({ open }: { open: boolean }) => {
-  return open ? <ExpandLessIcon /> : <ExpandMoreIcon />;
-};
-
-const ListItemButton = ({
-  icon,
-  onClick,
-  open,
-  path,
-  sx,
-  text,
-}: ListItemButtonProps) => {
-  const handleClick = useCallback(() => {
-    onClick(path);
-  }, [path, onClick]);
-
-  return (
-    <MuiListItemButton sx={sx} onClick={handleClick}>
-      <ListItemIcon>{icon}</ListItemIcon>
-      <ListItemText primary={text} />
-      {typeof open === 'boolean' && <CollapseIcon open={open} />}
-    </MuiListItemButton>
-  );
-};
-// #endregion
 
 const SX = { pl: 4 };
 
@@ -69,11 +22,14 @@ const ListItem = ({
   icon,
   onClick,
   path,
+  pathname,
   subItems,
   sx,
   text,
 }: ListItemProps) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(() => {
+    return subItems ? Boolean(pathname?.includes(path)) : undefined;
+  });
 
   const onToggle = useCallback(() => {
     setOpen((state) => !state);
@@ -85,8 +41,9 @@ const ListItem = ({
     <>
       <ListItemButton
         icon={icon}
-        open={subItems ? open : undefined}
+        open={open}
         path={path}
+        pathname={pathname}
         sx={sx}
         text={text}
         onClick={handleClick}
@@ -94,25 +51,46 @@ const ListItem = ({
       {subItems && (
         <Collapse in={open} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            {subItems.map(
-              ({ icon: subIcon, path, subItems, text: subText }, index) => (
-                <ListItem
-                  // eslint-disable-next-line react/no-array-index-key
-                  key={index}
-                  icon={subIcon}
-                  path={path}
-                  subItems={subItems}
-                  sx={SX}
-                  text={subText}
-                  onClick={onClick}
-                />
-              )
-            )}
+            {/* eslint-disable-next-line @typescript-eslint/no-use-before-define */}
+            {renderListItems({
+              items: subItems,
+              onClickItem: onClick,
+              pathname,
+              sx: SX,
+            })}
           </List>
         </Collapse>
       )}
     </>
   );
+};
+
+export const renderListItems = ({
+  items,
+  onClickItem,
+  pathname,
+  sx,
+}: {
+  onClickItem: ListItemProps['onClick'];
+  items?: ListItemBase[];
+  pathname?: string;
+  sx?: MuiListItemButtonBaseProps['sx'];
+}) => {
+  return items?.map(({ icon, path, subItems, text }, index) => {
+    return (
+      <ListItem
+        // eslint-disable-next-line react/no-array-index-key
+        key={index}
+        icon={icon}
+        path={path}
+        pathname={pathname}
+        subItems={subItems}
+        sx={sx}
+        text={text}
+        onClick={onClickItem}
+      />
+    );
+  });
 };
 
 export default ListItem;

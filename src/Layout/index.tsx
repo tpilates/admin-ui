@@ -10,25 +10,23 @@ import type { NavProps } from '../Nav';
 import Nav from '../Nav';
 import theme from '../theme';
 
-// #region types
-interface NavWidth {
-  width: NavProps['width'];
-}
-
 interface LayoutProps {
   children: ReactNode;
   navItems: NavProps['items'];
   navWidth: NavProps['width'];
   onClickItem: NavProps['onClickItem'];
+  pathname: NavProps['pathname'];
   businessName?: FooterProps['businessName'];
   footer?: FooterProps['children'];
   headerPages?: HeaderProps['pages'];
   headerTitle?: HeaderProps['title'];
   navTitle?: NavProps['title'];
 }
-// #endregion
 
-// #region
+type NavWidth = Pick<NavProps, 'width'>;
+
+const NAV_WIDTH = 240;
+
 const Container = styled('div', {
   shouldForwardProp: (prop) => prop !== 'width',
 })<NavWidth>(({ theme, width }) => ({
@@ -56,7 +54,6 @@ const NavWrapper = styled('nav', {
     display: 'block',
   },
 }));
-// #endregion
 
 const NAV_SX = { display: { md: 'none', xs: 'block' } };
 
@@ -65,10 +62,11 @@ const Layout = ({
   children,
   footer,
   headerPages,
+  pathname,
   headerTitle,
   navItems,
   navTitle,
-  navWidth = 240,
+  navWidth = NAV_WIDTH,
   onClickItem,
 }: LayoutProps) => {
   const [open, setOpen] = useState(false);
@@ -91,6 +89,7 @@ const Layout = ({
         <NavWrapper width={navWidth}>
           <Nav
             items={navItems}
+            pathname={pathname}
             title={navTitle}
             variant="permanent"
             width={navWidth}
@@ -99,6 +98,7 @@ const Layout = ({
           <Nav
             items={navItems}
             open={open}
+            pathname={pathname}
             sx={NAV_SX}
             title={navTitle}
             width={navWidth}

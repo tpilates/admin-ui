@@ -1,14 +1,10 @@
-/* eslint-disable no-console */
-import {
-  AllInclusive as AllinclusiveIcon,
-  AlternateEmail as AlternateEmailIcon,
-  Apple as AppleIcon,
-  Facebook as FacebookIcon,
-  Google as GoogleIcon,
-  Instagram as InstagramIcon,
-} from '@mui/icons-material';
+import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { useCallback, useState } from 'react';
 
+import { pagesData } from '../Header/Header.stories';
+import { itemsData } from '../Nav/Nav.stories';
+import { WithInputs } from '../WhiteBoard/WhiteBoard.stories';
 import Layout from '.';
 
 export default {
@@ -17,57 +13,44 @@ export default {
   title: 'Layout',
 } as ComponentMeta<typeof Layout>;
 
-const Template: ComponentStory<typeof Layout> = (args) => <Layout {...args} />;
+const Template: ComponentStory<typeof Layout> = (args) => {
+  const [pathname, setPathname] = useState('#apple');
 
-const items = [
-  {
-    icon: <AllinclusiveIcon />,
-    subItems: [
-      { icon: <FacebookIcon />, text: 'Facebook' },
-      { icon: <InstagramIcon />, text: 'Instagram' },
-    ],
-    text: 'Meta',
-  },
-  {
-    icon: <AppleIcon />,
-    path: '/',
-    text: 'Apple',
-  },
-  {
-    icon: <GoogleIcon />,
-    path: '/',
-    text: 'Google',
-  },
-];
+  const onClickItem = useCallback((path: string) => {
+    setPathname(path);
+  }, []);
 
-const pages = [
-  { path: '#', text: 'Facebook' },
-  { path: '#', text: 'Instagram' },
-];
+  return <Layout {...args} pathname={pathname} onClickItem={onClickItem} />;
+};
 
 export const Default = Template.bind({});
 Default.args = {
   businessName: 'Meta',
   children: 'MAIN',
-  headerPages: pages,
+  headerPages: pagesData,
   headerTitle: 'Meta',
-  navItems: items,
+  navItems: itemsData,
   navTitle: <AlternateEmailIcon />,
-  onClickItem: () => {
-    console.log('Click!');
-  },
 };
 
 export const CustomWidth = Template.bind({});
 CustomWidth.args = {
   businessName: 'Meta',
   children: 'MAIN',
-  headerPages: pages,
+  headerPages: pagesData,
   headerTitle: 'Meta',
-  navItems: items,
+  navItems: itemsData,
   navTitle: <AlternateEmailIcon />,
   navWidth: 320,
-  onClickItem: () => {
-    console.log('Click!');
-  },
+};
+
+export const WithWhiteBoard = Template.bind({});
+WithWhiteBoard.args = {
+  businessName: 'Meta',
+  children: <WithInputs {...WithInputs.args} />,
+  headerPages: pagesData,
+  headerTitle: 'Meta',
+  navItems: itemsData,
+  navTitle: <AlternateEmailIcon />,
+  navWidth: 240,
 };
