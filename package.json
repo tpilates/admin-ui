@@ -1,4 +1,9 @@
 {
+  "author": {
+    "email": "doinki94@gmail.com",
+    "name": "doinki",
+    "url": "https://github.com/doinki"
+  },
   "bugs": "https://github.com/tpilates/admin-ui/issues",
   "description": "Quickly build beautiful React apps.",
   "devDependencies": {
