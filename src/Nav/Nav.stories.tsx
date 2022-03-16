@@ -82,7 +82,7 @@ const Template: ComponentStory<typeof Nav> = (args) => {
   return <Nav {...props} pathname={pathname} onChange={onChange} />;
 };
 
-export const PermanentNav = Template.bind({});
+export const PermanentNav: ComponentStory<typeof Nav> = Template.bind({});
 PermanentNav.args = {
   items: itemsData,
   title: 'ADMIN',
@@ -90,7 +90,7 @@ PermanentNav.args = {
   width: 240,
 };
 
-export const TemporaryNav = Template.bind({});
+export const TemporaryNav: ComponentStory<typeof Nav> = Template.bind({});
 TemporaryNav.args = {
   items: itemsData,
   open: true,
@@ -98,7 +98,7 @@ TemporaryNav.args = {
   width: 240,
 };
 
-export const NestedNav = Template.bind({});
+export const NestedNav: ComponentStory<typeof Nav> = Template.bind({});
 NestedNav.args = {
   items: nestedItemsData,
   pathname: '#battery/90',
@@ -107,7 +107,7 @@ NestedNav.args = {
   width: 240,
 };
 
-export const NavWithLists = Template.bind({});
+export const NavWithLists: ComponentStory<typeof Nav> = Template.bind({});
 NavWithLists.args = {
   lists: listsData,
   pathname: '#battery/80/60',
@@ -117,7 +117,7 @@ NavWithLists.args = {
   width: 240,
 };
 
-export const ResponsiveNav = Template.bind({});
+export const ResponsiveNav: ComponentStory<typeof Nav> = Template.bind({});
 ResponsiveNav.args = {
   items: itemsData,
   sx: { display: { md: 'block', xs: 'none' } },

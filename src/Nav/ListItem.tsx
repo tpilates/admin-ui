@@ -1,25 +1,22 @@
 import type { ListItemButtonBaseProps as MuiListItemButtonBaseProps } from '@mui/material';
 import { Collapse, List } from '@mui/material';
+import type { VFC } from 'react';
 import { useCallback, useState } from 'react';
 
-import type { LinkHandler } from '../types';
-import type { ListItemButtonBase, ListItemButtonProps } from './ListItemButton';
+import type { LinkHandler, LinkWithIcon } from '../types';
+import type { ListItemButtonProps } from './ListItemButton';
 import ListItemButton from './ListItemButton';
 
-export interface ListItemBase extends ListItemButtonBase {
-  subItems?: ListItemBase[];
+export interface NavListItem extends LinkWithIcon {
+  subItems?: NavListItem[];
 }
-export interface ListItemProps
-  extends Pick<
-    ListItemButtonProps,
-    'icon' | 'href' | 'pathname' | 'onClick' | 'sx' | 'text'
-  > {
-  subItems?: ListItemBase[];
+export interface ListItemProps extends Omit<ListItemButtonProps, 'open'> {
+  subItems?: NavListItem[];
 }
 
 const SX = { pl: 4 };
 
-const ListItem = ({
+const ListItem: VFC<ListItemProps> = ({
   href,
   icon,
   onClick,
@@ -27,7 +24,7 @@ const ListItem = ({
   subItems,
   sx,
   text,
-}: ListItemProps) => {
+}) => {
   const [open, setOpen] = useState(() => {
     return subItems ? Boolean(pathname?.includes(href)) : undefined;
   });
@@ -73,7 +70,7 @@ export const renderListItems = ({
   sx,
 }: {
   onChange: LinkHandler;
-  items?: ListItemBase[];
+  items?: NavListItem[];
   pathname?: string;
   sx?: MuiListItemButtonBaseProps['sx'];
 }) => {

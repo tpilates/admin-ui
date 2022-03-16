@@ -9,24 +9,26 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
-import type { ReactNode } from 'react';
+import type { ReactNode, VFC } from 'react';
 import { memo } from 'react';
 
 import type { LinkHandler } from '../types';
-import type { ListItemProps } from './ListItem';
+import type { NavListItem } from './ListItem';
 import { renderListItems } from './ListItem';
 
-export interface NavProps {
+export interface NavList {
+  items: NavListItem[];
+  subheader: string;
+}
+export interface NavProps
+  extends Pick<DrawerProps, 'onClose' | 'sx' | 'variant'> {
   onChange: LinkHandler;
   pathname: string;
-  width: number;
-  items?: ListItemProps[];
-  lists?: { items: ListItemProps[]; subheader: string }[];
-  onClose?: DrawerProps['onClose'];
+  items?: NavListItem[];
+  lists?: NavList[];
   open?: boolean;
-  sx?: DrawerProps['sx'];
   title?: ReactNode;
-  variant?: DrawerProps['variant'];
+  width?: number;
 }
 
 const COLOR = '#F5F5F7';
@@ -69,7 +71,7 @@ const StyledDrawer = styled(Drawer, {
   },
 }));
 
-const Nav = ({
+const Nav: VFC<NavProps> = ({
   items,
   lists,
   onChange,
@@ -80,7 +82,7 @@ const Nav = ({
   title,
   variant = 'temporary',
   width = 240,
-}: NavProps) => {
+}) => {
   return (
     <ThemeProvider theme={theme}>
       <StyledDrawer
@@ -115,4 +117,6 @@ const Nav = ({
   );
 };
 
+export * from './ListItem';
+export * from './ListItemButton';
 export default memo(Nav);

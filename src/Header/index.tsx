@@ -10,13 +10,13 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
-import type { MouseEventHandler } from 'react';
+import type { MouseEventHandler, VFC } from 'react';
 import { memo, useCallback, useState } from 'react';
 
 import type { Link } from '../types';
 
 export interface HeaderProps {
-  onOpen: MouseEventHandler<HTMLButtonElement>;
+  onOpen?: MouseEventHandler<HTMLButtonElement>;
   pages?: Link[];
   title?: string;
 }
@@ -42,11 +42,13 @@ const Div = styled('div', {
 const StyledHeader = styled(AppBar, {
   shouldForwardProp: () => true,
 })({
-  borderBottom: '1px solid black',
+  borderBottomColor: 'black',
+  borderBottomStyle: 'solid',
+  borderBottomWidth: '1px',
   boxShadow: 'none',
 });
 
-const Header = ({ onOpen, pages = [], title }: HeaderProps) => {
+const Header: VFC<HeaderProps> = ({ onOpen, pages = [], title }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const onCloseMenu = useCallback<MouseEventHandler<HTMLLIElement>>(() => {

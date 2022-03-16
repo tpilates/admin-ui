@@ -1,3 +1,4 @@
+import type { Theme } from '@mui/material';
 import { CssBaseline, styled, ThemeProvider } from '@mui/material';
 import type { FC, ReactNode } from 'react';
 import { useCallback, useState } from 'react';
@@ -8,19 +9,19 @@ import type { HeaderProps } from '../Header';
 import Header from '../Header';
 import type { NavProps } from '../Nav';
 import Nav from '../Nav';
-import theme from '../theme';
 
-interface LayoutProps {
-  headerTitle: HeaderProps['title'];
-  navWidth: NavProps['width'];
-  onChange: NavProps['onChange'];
-  pathname: NavProps['pathname'];
-  businessName?: FooterProps['businessName'];
-  footer?: ReactNode;
+type LayoutFooter = Pick<FooterProps, 'businessName'>;
+type LayoutNav = Pick<NavProps, 'pathname' | 'onChange'>;
+export interface LayoutProps extends LayoutFooter, LayoutNav {
+  children: ReactNode;
+  theme: Theme;
+  footer?: FooterProps['children'];
   headerPages?: HeaderProps['pages'];
+  headerTitle?: HeaderProps['title'];
   navItems?: NavProps['items'];
   navLists?: NavProps['lists'];
   navTitle?: NavProps['title'];
+  navWidth?: NavProps['width'];
 }
 
 type NavWidth = Pick<NavProps, 'width'>;
@@ -29,7 +30,7 @@ const NAV_WIDTH = 240;
 
 const Container = styled('div', {
   shouldForwardProp: (prop) => prop !== 'width',
-})<NavWidth>(({ theme, width }) => ({
+})<NavWidth>(({ theme, width = NAV_WIDTH }) => ({
   display: 'grid',
   gridTemplateColumns: '1fr',
   gridTemplateRows: 'auto 1fr auto',
@@ -46,7 +47,7 @@ const Main = styled('main')(({ theme }) => ({
 
 const NavWrapper = styled('nav', {
   shouldForwardProp: (prop) => prop !== 'width',
-})<NavWidth>(({ theme, width }) => ({
+})<NavWidth>(({ theme, width = NAV_WIDTH }) => ({
   display: 'none',
   gridRow: '1 / 4',
   width,
@@ -68,6 +69,7 @@ const Layout: FC<LayoutProps> = ({
   navItems,
   navTitle,
   navWidth = NAV_WIDTH,
+  theme,
   onChange,
 }) => {
   const [open, setOpen] = useState(false);
