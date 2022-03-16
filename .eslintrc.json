@@ -9,6 +9,7 @@
     "plugin:prettier/recommended",
     "plugin:react/jsx-runtime"
   ],
+  "ignorePatterns": "lib",
   "parserOptions": { "project": "tsconfig.eslint.json" },
   "plugins": [
     "simple-import-sort",
@@ -17,6 +18,7 @@
     "typescript-sort-keys"
   ],
   "rules": {
+    "@typescript-eslint/consistent-type-exports": "error",
     "@typescript-eslint/consistent-type-imports": "error",
     "@typescript-eslint/no-shadow": "off",
     "import/no-extraneous-dependencies": [
