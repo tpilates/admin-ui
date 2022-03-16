@@ -54,7 +54,7 @@
   ],
   "license": "MIT",
   "main": "lib/cjs/index.js",
-  "module": "lib/esm/index.js",
+  "module": "lib/index.js",
   "name": "@tpilates/admin-ui",
   "peerDependencies": {
     "@emotion/react": "^11.0.0",
@@ -68,7 +68,7 @@
     "url": "https://github.com/tpilates/admin-ui.git"
   },
   "scripts": {
-    "build": "yarn build:cjs && yarn build:esm",
+    "build": "yarn build:esm && yarn build:cjs",
     "build-storybook": "build-storybook -o docs",
     "build:cjs": "tsc --declaration false --outDir lib/cjs -m CommonJS -t ES2020",
     "build:esm": "tsc",
@@ -78,6 +78,6 @@
     "storybook": "start-storybook -p 6006"
   },
   "sideEffects": false,
-  "types": "lib/esm/index.d.ts",
+  "types": "lib/index.d.ts",
   "version": "1.5.0"
 }
