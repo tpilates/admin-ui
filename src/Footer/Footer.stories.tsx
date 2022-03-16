@@ -9,14 +9,14 @@ export default {
 
 const Template: ComponentStory<typeof Footer> = (args) => <Footer {...args} />;
 
-export const Default = Template.bind({});
+export const Default: ComponentStory<typeof Footer> = Template.bind({});
 
-export const WithCompany = Template.bind({});
+export const WithCompany: ComponentStory<typeof Footer> = Template.bind({});
 WithCompany.args = {
   businessName: 'Meta',
 };
 
-export const WithChildren = Template.bind({});
+export const WithChildren: ComponentStory<typeof Footer> = Template.bind({});
 WithChildren.args = {
   businessName: 'Meta',
   children: (
