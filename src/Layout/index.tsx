@@ -1,5 +1,6 @@
+import type { Theme } from '@mui/material';
 import { CssBaseline, styled, ThemeProvider } from '@mui/material';
-import type { ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 import { useCallback, useState } from 'react';
 
 import type { FooterProps } from '../Footer';
@@ -8,19 +9,19 @@ import type { HeaderProps } from '../Header';
 import Header from '../Header';
 import type { NavProps } from '../Nav';
 import Nav from '../Nav';
-import theme from '../theme';
 
-interface LayoutProps {
+type LayoutFooter = Pick<FooterProps, 'businessName'>;
+type LayoutNav = Pick<NavProps, 'pathname' | 'onChange'>;
+export interface LayoutProps extends LayoutFooter, LayoutNav {
   children: ReactNode;
-  navItems: NavProps['items'];
-  navWidth: NavProps['width'];
-  onClickItem: NavProps['onClickItem'];
-  pathname: NavProps['pathname'];
-  businessName?: FooterProps['businessName'];
+  theme: Theme;
   footer?: FooterProps['children'];
   headerPages?: HeaderProps['pages'];
   headerTitle?: HeaderProps['title'];
+  navItems?: NavProps['items'];
+  navLists?: NavProps['lists'];
   navTitle?: NavProps['title'];
+  navWidth?: NavProps['width'];
 }
 
 type NavWidth = Pick<NavProps, 'width'>;
@@ -29,7 +30,7 @@ const NAV_WIDTH = 240;
 
 const Container = styled('div', {
   shouldForwardProp: (prop) => prop !== 'width',
-})<NavWidth>(({ theme, width }) => ({
+})<NavWidth>(({ theme, width = NAV_WIDTH }) => ({
   display: 'grid',
   gridTemplateColumns: '1fr',
   gridTemplateRows: 'auto 1fr auto',
@@ -46,7 +47,7 @@ const Main = styled('main')(({ theme }) => ({
 
 const NavWrapper = styled('nav', {
   shouldForwardProp: (prop) => prop !== 'width',
-})<NavWidth>(({ theme, width }) => ({
+})<NavWidth>(({ theme, width = NAV_WIDTH }) => ({
   display: 'none',
   gridRow: '1 / 4',
   width,
@@ -57,18 +58,20 @@ const NavWrapper = styled('nav', {
 
 const NAV_SX = { display: { md: 'none', xs: 'block' } };
 
-const Layout = ({
+const Layout: FC<LayoutProps> = ({
   businessName,
   children,
   footer,
   headerPages,
   pathname,
   headerTitle,
+  navLists,
   navItems,
   navTitle,
   navWidth = NAV_WIDTH,
-  onClickItem,
-}: LayoutProps) => {
+  theme,
+  onChange,
+}) => {
   const [open, setOpen] = useState(false);
 
   const onOpenDrawer = useCallback(() => {
@@ -89,20 +92,22 @@ const Layout = ({
         <NavWrapper width={navWidth}>
           <Nav
             items={navItems}
+            lists={navLists}
             pathname={pathname}
             title={navTitle}
             variant="permanent"
             width={navWidth}
-            onClickItem={onClickItem}
+            onChange={onChange}
           />
           <Nav
             items={navItems}
+            lists={navLists}
             open={open}
             pathname={pathname}
             sx={NAV_SX}
             title={navTitle}
             width={navWidth}
-            onClickItem={onClickItem}
+            onChange={onChange}
             onClose={onCloseDrawer}
           />
         </NavWrapper>

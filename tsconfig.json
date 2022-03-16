@@ -7,7 +7,7 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "noEmitOnError": true,
-    "outDir": "lib/esm",
+    "outDir": "lib",
     "removeComments": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,

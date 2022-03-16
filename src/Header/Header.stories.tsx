@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { action } from '@storybook/addon-actions';
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 
@@ -12,24 +11,23 @@ export default {
 
 export const pagesData = [
   {
-    path: '#facebook',
+    href: '#facebook',
     text: 'Facebook',
   },
   {
-    path: '#instagram',
+    href: '#instagram',
     text: 'Instagram',
   },
 ];
 
 const Template: ComponentStory<typeof Header> = (args) => <Header {...args} />;
 
-export const Default = Template.bind({});
+export const Default: ComponentStory<typeof Header> = Template.bind({});
 Default.args = {
-  onOpen: action('onOpen'),
   title: 'Meta',
 };
 
-export const WithPages = Template.bind({});
+export const WithPages: ComponentStory<typeof Header> = Template.bind({});
 WithPages.args = {
   onOpen: action('onOpen'),
   pages: pagesData,

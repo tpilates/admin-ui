@@ -1,34 +1,32 @@
 import type { ListItemButtonBaseProps as MuiListItemButtonBaseProps } from '@mui/material';
 import { Collapse, List } from '@mui/material';
+import type { VFC } from 'react';
 import { useCallback, useState } from 'react';
 
-import type { ListItemButtonBase, ListItemButtonProps } from './ListItemButton';
+import type { LinkHandler, LinkWithIcon } from '../types';
+import type { ListItemButtonProps } from './ListItemButton';
 import ListItemButton from './ListItemButton';
 
-export interface ListItemBase extends ListItemButtonBase {
-  subItems?: ListItemBase[];
+export interface NavListItem extends LinkWithIcon {
+  subItems?: NavListItem[];
 }
-export interface ListItemProps
-  extends Pick<
-    ListItemButtonProps,
-    'icon' | 'path' | 'pathname' | 'onClick' | 'sx' | 'text'
-  > {
-  subItems?: ListItemBase[];
+export interface ListItemProps extends Omit<ListItemButtonProps, 'open'> {
+  subItems?: NavListItem[];
 }
 
 const SX = { pl: 4 };
 
-const ListItem = ({
+const ListItem: VFC<ListItemProps> = ({
+  href,
   icon,
   onClick,
-  path,
   pathname,
   subItems,
   sx,
   text,
-}: ListItemProps) => {
+}) => {
   const [open, setOpen] = useState(() => {
-    return subItems ? Boolean(pathname?.includes(path)) : undefined;
+    return subItems ? Boolean(pathname?.includes(href)) : undefined;
   });
 
   const onToggle = useCallback(() => {
@@ -40,9 +38,9 @@ const ListItem = ({
   return (
     <>
       <ListItemButton
+        href={href}
         icon={icon}
         open={open}
-        path={path}
         pathname={pathname}
         sx={sx}
         text={text}
@@ -54,7 +52,7 @@ const ListItem = ({
             {/* eslint-disable-next-line @typescript-eslint/no-use-before-define */}
             {renderListItems({
               items: subItems,
-              onClickItem: onClick,
+              onChange: onClick,
               pathname,
               sx: SX,
             })}
@@ -67,27 +65,27 @@ const ListItem = ({
 
 export const renderListItems = ({
   items,
-  onClickItem,
+  onChange,
   pathname,
   sx,
 }: {
-  onClickItem: ListItemProps['onClick'];
-  items?: ListItemBase[];
+  onChange: LinkHandler;
+  items?: NavListItem[];
   pathname?: string;
   sx?: MuiListItemButtonBaseProps['sx'];
 }) => {
-  return items?.map(({ icon, path, subItems, text }, index) => {
+  return items?.map(({ href, icon, subItems, text }, index) => {
     return (
       <ListItem
         // eslint-disable-next-line react/no-array-index-key
         key={index}
+        href={href}
         icon={icon}
-        path={path}
         pathname={pathname}
         subItems={subItems}
         sx={sx}
         text={text}
-        onClick={onClickItem}
+        onClick={onChange}
       />
     );
   });

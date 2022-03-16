@@ -20,39 +20,39 @@ export default {
 
 export const itemsData = [
   {
+    href: '#meta',
     icon: <AllInclusiveIcon />,
-    path: '#meta',
     subItems: [
-      { icon: <FacebookIcon />, path: '#meta/facebook', text: 'Facebook' },
-      { icon: <InstagramIcon />, path: '#meta/instagram', text: 'Instagram' },
+      { href: '#meta/facebook', icon: <FacebookIcon />, text: 'Facebook' },
+      { href: '#meta/instagram', icon: <InstagramIcon />, text: 'Instagram' },
     ],
     text: 'Meta',
   },
   {
+    href: '#apple',
     icon: <AppleIcon />,
-    path: '#apple',
     text: 'Apple',
   },
   {
+    href: '#google',
     icon: <GoogleIcon />,
-    path: '#google',
     text: 'Google',
   },
 ];
 
 export const nestedItemsData = [
   {
+    href: '#battery',
     icon: <BatteryFullIcon />,
-    path: '#battery',
     subItems: [
-      { icon: <Battery90Icon />, path: '#battery/90', text: 'Battery90' },
+      { href: '#battery/90', icon: <Battery90Icon />, text: 'Battery90' },
       {
+        href: '#battery/80',
         icon: <Battery80Icon />,
-        path: '#battery/80',
         subItems: [
           {
+            href: '#battery/80/60',
             icon: <Battery60Icon />,
-            path: '#battery/80/60',
             text: 'Battery60',
           },
         ],
@@ -75,14 +75,14 @@ const Template: ComponentStory<typeof Nav> = (args) => {
   const { pathname: argsPathname, ...props } = args;
   const [pathname, setPathname] = useState(argsPathname || '#meta/instagram');
 
-  const onClickItem = useCallback((path: string) => {
+  const onChange = useCallback((path: string) => {
     setPathname(path);
   }, []);
 
-  return <Nav {...props} pathname={pathname} onClickItem={onClickItem} />;
+  return <Nav {...props} pathname={pathname} onChange={onChange} />;
 };
 
-export const PermanentNav = Template.bind({});
+export const PermanentNav: ComponentStory<typeof Nav> = Template.bind({});
 PermanentNav.args = {
   items: itemsData,
   title: 'ADMIN',
@@ -90,7 +90,7 @@ PermanentNav.args = {
   width: 240,
 };
 
-export const TemporaryNav = Template.bind({});
+export const TemporaryNav: ComponentStory<typeof Nav> = Template.bind({});
 TemporaryNav.args = {
   items: itemsData,
   open: true,
@@ -98,7 +98,7 @@ TemporaryNav.args = {
   width: 240,
 };
 
-export const NestedNav = Template.bind({});
+export const NestedNav: ComponentStory<typeof Nav> = Template.bind({});
 NestedNav.args = {
   items: nestedItemsData,
   pathname: '#battery/90',
@@ -107,7 +107,7 @@ NestedNav.args = {
   width: 240,
 };
 
-export const NavWithLists = Template.bind({});
+export const NavWithLists: ComponentStory<typeof Nav> = Template.bind({});
 NavWithLists.args = {
   lists: listsData,
   pathname: '#battery/80/60',
@@ -117,7 +117,7 @@ NavWithLists.args = {
   width: 240,
 };
 
-export const ResponsiveNav = Template.bind({});
+export const ResponsiveNav: ComponentStory<typeof Nav> = Template.bind({});
 ResponsiveNav.args = {
   items: itemsData,
   sx: { display: { md: 'block', xs: 'none' } },

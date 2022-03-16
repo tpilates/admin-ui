@@ -6,42 +6,38 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
-import type { ReactNode } from 'react';
+import type { VFC } from 'react';
 import { useCallback } from 'react';
 
-import type { Link } from '../types';
+import type { LinkHandler, LinkWithIcon } from '../types';
 
-export interface ListItemButtonBase extends Link {
-  icon?: ReactNode;
-}
-
-export interface ListItemButtonProps extends ListItemButtonBase {
-  onClick: (path: string) => void;
+export interface ListItemButtonProps extends LinkWithIcon {
+  onClick: LinkHandler;
   open?: boolean;
   pathname?: string;
   sx?: MuiListItemButtonBaseProps['sx'];
 }
 
-const CollapseIcon = ({ open }: { open: boolean }) => {
+const CollapseIcon: VFC<{ open: boolean }> = ({ open }) => {
   return open ? <ExpandLessIcon /> : <ExpandMoreIcon />;
 };
 
-const ListItemButton = ({
+const ListItemButton: VFC<ListItemButtonProps> = ({
+  href,
   icon,
   onClick,
   open,
-  path,
   pathname,
   sx,
   text,
-}: ListItemButtonProps) => {
+}) => {
   const handleClick = useCallback(() => {
-    onClick(path);
-  }, [path, onClick]);
+    onClick(href, text);
+  }, [href, text, onClick]);
 
   return (
     <MuiListItemButton
-      selected={pathname === path}
+      selected={pathname === href}
       sx={sx}
       onClick={handleClick}
     >
