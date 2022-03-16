@@ -2,7 +2,6 @@ import CallMadeIcon from '@mui/icons-material/CallMade';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
   AppBar,
-  Box,
   IconButton,
   Link as MuiLink,
   Menu,
@@ -17,7 +16,7 @@ import { memo, useCallback, useState } from 'react';
 import type { Link } from '../types';
 
 export interface HeaderProps {
-  onOpen?: MouseEventHandler<HTMLButtonElement>;
+  onOpen: MouseEventHandler<HTMLButtonElement>;
   pages?: Link[];
   title?: string;
 }
@@ -36,6 +35,10 @@ const XS_SX = {
   },
 };
 
+const Div = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'flexGrow',
+})<{ flexGrow: number }>(({ flexGrow }) => ({ flexGrow }));
+
 const StyledHeader = styled(AppBar, {
   shouldForwardProp: () => true,
 })({
@@ -43,7 +46,7 @@ const StyledHeader = styled(AppBar, {
   boxShadow: 'none',
 });
 
-const Header = ({ title, pages = [], onOpen }: HeaderProps) => {
+const Header = ({ onOpen, pages = [], title }: HeaderProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const onCloseMenu = useCallback<MouseEventHandler<HTMLLIElement>>(() => {
@@ -63,7 +66,7 @@ const Header = ({ title, pages = [], onOpen }: HeaderProps) => {
         </Typography>
 
         {/* xs: left nav */}
-        <Box flexGrow={1} sx={XS_SX}>
+        <Div flexGrow={1} sx={XS_SX}>
           <IconButton
             color="inherit"
             id="left-header-button"
@@ -72,7 +75,7 @@ const Header = ({ title, pages = [], onOpen }: HeaderProps) => {
           >
             <MenuIcon />
           </IconButton>
-        </Box>
+        </Div>
 
         {/* xs: title */}
         <Typography component="div" flexGrow={1} sx={XS_SX} variant="h6" noWrap>
@@ -80,22 +83,22 @@ const Header = ({ title, pages = [], onOpen }: HeaderProps) => {
         </Typography>
 
         {/* md: nav */}
-        <Box flexGrow={1} sx={MD_SX}>
-          {pages.map(({ path, text }) => (
+        <Div flexGrow={1} sx={MD_SX}>
+          {pages.map(({ href, text }) => (
             <MuiLink
               key={text}
               color="inherit"
-              href={path}
+              href={href}
               padding={2}
               underline="hover"
             >
               {text}
             </MuiLink>
           ))}
-        </Box>
+        </Div>
 
         {/* xs: right nav */}
-        <Box flexGrow={0} sx={XS_SX}>
+        <Div flexGrow={0} sx={XS_SX}>
           <IconButton
             color="inherit"
             id="right-header-button"
@@ -111,15 +114,15 @@ const Header = ({ title, pages = [], onOpen }: HeaderProps) => {
             keepMounted
             onClose={onCloseMenu}
           >
-            {pages.map(({ path, text }) => (
+            {pages.map(({ href, text }) => (
               <MenuItem key={text} onClick={onCloseMenu}>
-                <MuiLink color="inherit" href={path} underline="none">
+                <MuiLink color="inherit" href={href} underline="none">
                   <Typography textAlign="center">{text}</Typography>
                 </MuiLink>
               </MenuItem>
             ))}
           </Menu>
-        </Box>
+        </Div>
       </Toolbar>
     </StyledHeader>
   );

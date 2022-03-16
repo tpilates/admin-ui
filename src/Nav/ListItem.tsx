@@ -2,6 +2,7 @@ import type { ListItemButtonBaseProps as MuiListItemButtonBaseProps } from '@mui
 import { Collapse, List } from '@mui/material';
 import { useCallback, useState } from 'react';
 
+import type { LinkHandler } from '../types';
 import type { ListItemButtonBase, ListItemButtonProps } from './ListItemButton';
 import ListItemButton from './ListItemButton';
 
@@ -11,7 +12,7 @@ export interface ListItemBase extends ListItemButtonBase {
 export interface ListItemProps
   extends Pick<
     ListItemButtonProps,
-    'icon' | 'path' | 'pathname' | 'onClick' | 'sx' | 'text'
+    'icon' | 'href' | 'pathname' | 'onClick' | 'sx' | 'text'
   > {
   subItems?: ListItemBase[];
 }
@@ -19,16 +20,16 @@ export interface ListItemProps
 const SX = { pl: 4 };
 
 const ListItem = ({
+  href,
   icon,
   onClick,
-  path,
   pathname,
   subItems,
   sx,
   text,
 }: ListItemProps) => {
   const [open, setOpen] = useState(() => {
-    return subItems ? Boolean(pathname?.includes(path)) : undefined;
+    return subItems ? Boolean(pathname?.includes(href)) : undefined;
   });
 
   const onToggle = useCallback(() => {
@@ -40,9 +41,9 @@ const ListItem = ({
   return (
     <>
       <ListItemButton
+        href={href}
         icon={icon}
         open={open}
-        path={path}
         pathname={pathname}
         sx={sx}
         text={text}
@@ -54,7 +55,7 @@ const ListItem = ({
             {/* eslint-disable-next-line @typescript-eslint/no-use-before-define */}
             {renderListItems({
               items: subItems,
-              onClickItem: onClick,
+              onChange: onClick,
               pathname,
               sx: SX,
             })}
@@ -67,27 +68,27 @@ const ListItem = ({
 
 export const renderListItems = ({
   items,
-  onClickItem,
+  onChange,
   pathname,
   sx,
 }: {
-  onClickItem: ListItemProps['onClick'];
+  onChange: LinkHandler;
   items?: ListItemBase[];
   pathname?: string;
   sx?: MuiListItemButtonBaseProps['sx'];
 }) => {
-  return items?.map(({ icon, path, subItems, text }, index) => {
+  return items?.map(({ href, icon, subItems, text }, index) => {
     return (
       <ListItem
         // eslint-disable-next-line react/no-array-index-key
         key={index}
+        href={href}
         icon={icon}
-        path={path}
         pathname={pathname}
         subItems={subItems}
         sx={sx}
         text={text}
-        onClick={onClickItem}
+        onClick={onChange}
       />
     );
   });

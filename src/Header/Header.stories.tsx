@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { action } from '@storybook/addon-actions';
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 
@@ -12,11 +11,11 @@ export default {
 
 export const pagesData = [
   {
-    path: '#facebook',
+    href: '#facebook',
     text: 'Facebook',
   },
   {
-    path: '#instagram',
+    href: '#instagram',
     text: 'Instagram',
   },
 ];

@@ -1,5 +1,5 @@
-import { Box } from '@mui/material';
-import type { ReactNode } from 'react';
+import { styled } from '@mui/material';
+import type { FC, ReactNode } from 'react';
 import { memo, useMemo } from 'react';
 
 export interface FooterProps {
@@ -7,19 +7,31 @@ export interface FooterProps {
   children?: ReactNode;
 }
 
-const Footer = ({ businessName, children }: FooterProps) => {
+const Container = styled('footer')(({ theme }) => ({
+  borderTopColor: 'black',
+  borderTopStyle: 'solid',
+  borderTopWidth: '1px',
+  overflow: 'auto',
+  paddingLeft: theme.spacing(3),
+  paddingRight: theme.spacing(3),
+}));
+
+const P = styled('p')(({ theme }) => ({
+  marginBottom: theme.spacing(3),
+  marginTop: theme.spacing(3),
+}));
+
+const Footer: FC<FooterProps> = ({ businessName, children }) => {
   const $businessName = useMemo(
     () => (businessName ? ` ${businessName}` : ''),
     [businessName]
   );
 
   return (
-    <Box borderTop="1px solid black" component="footer" overflow="auto" px={3}>
+    <Container>
       {children}
-      <Box component="p" my={3}>
-        © 2022{$businessName}. All rights reserved.
-      </Box>
-    </Box>
+      <P>© 2022{$businessName}. All rights reserved.</P>
+    </Container>
   );
 };
 

@@ -1,5 +1,5 @@
 import { CssBaseline, styled, ThemeProvider } from '@mui/material';
-import type { ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 import { useCallback, useState } from 'react';
 
 import type { FooterProps } from '../Footer';
@@ -11,15 +11,15 @@ import Nav from '../Nav';
 import theme from '../theme';
 
 interface LayoutProps {
-  children: ReactNode;
-  navItems: NavProps['items'];
+  headerTitle: HeaderProps['title'];
   navWidth: NavProps['width'];
-  onClickItem: NavProps['onClickItem'];
+  onChange: NavProps['onChange'];
   pathname: NavProps['pathname'];
   businessName?: FooterProps['businessName'];
-  footer?: FooterProps['children'];
+  footer?: ReactNode;
   headerPages?: HeaderProps['pages'];
-  headerTitle?: HeaderProps['title'];
+  navItems?: NavProps['items'];
+  navLists?: NavProps['lists'];
   navTitle?: NavProps['title'];
 }
 
@@ -57,18 +57,19 @@ const NavWrapper = styled('nav', {
 
 const NAV_SX = { display: { md: 'none', xs: 'block' } };
 
-const Layout = ({
+const Layout: FC<LayoutProps> = ({
   businessName,
   children,
   footer,
   headerPages,
   pathname,
   headerTitle,
+  navLists,
   navItems,
   navTitle,
   navWidth = NAV_WIDTH,
-  onClickItem,
-}: LayoutProps) => {
+  onChange,
+}) => {
   const [open, setOpen] = useState(false);
 
   const onOpenDrawer = useCallback(() => {
@@ -89,20 +90,22 @@ const Layout = ({
         <NavWrapper width={navWidth}>
           <Nav
             items={navItems}
+            lists={navLists}
             pathname={pathname}
             title={navTitle}
             variant="permanent"
             width={navWidth}
-            onClickItem={onClickItem}
+            onChange={onChange}
           />
           <Nav
             items={navItems}
+            lists={navLists}
             open={open}
             pathname={pathname}
             sx={NAV_SX}
             title={navTitle}
             width={navWidth}
-            onClickItem={onClickItem}
+            onChange={onChange}
             onClose={onCloseDrawer}
           />
         </NavWrapper>

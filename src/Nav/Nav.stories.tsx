@@ -20,39 +20,39 @@ export default {
 
 export const itemsData = [
   {
+    href: '#meta',
     icon: <AllInclusiveIcon />,
-    path: '#meta',
     subItems: [
-      { icon: <FacebookIcon />, path: '#meta/facebook', text: 'Facebook' },
-      { icon: <InstagramIcon />, path: '#meta/instagram', text: 'Instagram' },
+      { href: '#meta/facebook', icon: <FacebookIcon />, text: 'Facebook' },
+      { href: '#meta/instagram', icon: <InstagramIcon />, text: 'Instagram' },
     ],
     text: 'Meta',
   },
   {
+    href: '#apple',
     icon: <AppleIcon />,
-    path: '#apple',
     text: 'Apple',
   },
   {
+    href: '#google',
     icon: <GoogleIcon />,
-    path: '#google',
     text: 'Google',
   },
 ];
 
 export const nestedItemsData = [
   {
+    href: '#battery',
     icon: <BatteryFullIcon />,
-    path: '#battery',
     subItems: [
-      { icon: <Battery90Icon />, path: '#battery/90', text: 'Battery90' },
+      { href: '#battery/90', icon: <Battery90Icon />, text: 'Battery90' },
       {
+        href: '#battery/80',
         icon: <Battery80Icon />,
-        path: '#battery/80',
         subItems: [
           {
+            href: '#battery/80/60',
             icon: <Battery60Icon />,
-            path: '#battery/80/60',
             text: 'Battery60',
           },
         ],
@@ -75,11 +75,11 @@ const Template: ComponentStory<typeof Nav> = (args) => {
   const { pathname: argsPathname, ...props } = args;
   const [pathname, setPathname] = useState(argsPathname || '#meta/instagram');
 
-  const onClickItem = useCallback((path: string) => {
+  const onChange = useCallback((path: string) => {
     setPathname(path);
   }, []);
 
-  return <Nav {...props} pathname={pathname} onClickItem={onClickItem} />;
+  return <Nav {...props} pathname={pathname} onChange={onChange} />;
 };
 
 export const PermanentNav = Template.bind({});

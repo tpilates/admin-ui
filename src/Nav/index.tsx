@@ -12,11 +12,12 @@ import {
 import type { ReactNode } from 'react';
 import { memo } from 'react';
 
+import type { LinkHandler } from '../types';
 import type { ListItemProps } from './ListItem';
 import { renderListItems } from './ListItem';
 
 export interface NavProps {
-  onClickItem: ListItemProps['onClick'];
+  onChange: LinkHandler;
   pathname: string;
   width: number;
   items?: ListItemProps[];
@@ -71,7 +72,7 @@ const StyledDrawer = styled(Drawer, {
 const Nav = ({
   items,
   lists,
-  onClickItem,
+  onChange,
   onClose,
   open,
   pathname,
@@ -104,10 +105,10 @@ const Nav = ({
                 <ListSubheader component="header">{subheader}</ListSubheader>
               }
             >
-              {renderListItems({ items, onClickItem, pathname })}
+              {renderListItems({ items, onChange, pathname })}
             </List>
           ))}
-          {renderListItems({ items, onClickItem, pathname })}
+          {renderListItems({ items, onChange, pathname })}
         </List>
       </StyledDrawer>
     </ThemeProvider>

@@ -1,4 +1,6 @@
 export interface Link {
-  path: string;
+  href: string;
   text: string;
 }
+
+export type LinkHandler = (href: string, text: string) => void;
