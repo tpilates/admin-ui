@@ -70,7 +70,7 @@
   "scripts": {
     "build": "yarn build:esm && yarn build:cjs",
     "build-storybook": "build-storybook -o docs",
-    "build:cjs": "tsc --declaration false --outDir lib/cjs -m CommonJS -t ES2020",
+    "build:cjs": "tsc --declaration false --outDir lib/cjs -m CommonJS -t ES6",
     "build:esm": "tsc",
     "prebuild": "rimraf lib",
     "prepare": "husky install",
